@@ -8,14 +8,6 @@ import logging
 # vc3-http        20333/tcp
 # vc3-https       20334/tcp
 #
-# add this to secureheaders():
-# only add Strict-Transport headers if we're actually using SSL; see the ietf spec
-# "An HSTS Host MUST NOT include the STS header field in HTTP responses
-# conveyed over non-secure transport"
-# http://tools.ietf.org/html/draft-ietf-websec-strict-transport-sec-14#section-7.2
-#if (cherrypy.server.ssl_certificate != None and cherrypy.server.ssl_private_key != None):
-#headers['Strict-Transport-Security'] = 'max-age=31536000'  # one year
-#
 # Thanks: http://www.zacwitte.com/using-ssl-https-with-cherrypy-3-2-0-example
 #
 # SSL broken in CherryPy > 3.2.3 
