@@ -34,11 +34,11 @@ class InfoService(object):
     
 if __name__ == '__main__':
     
-    NCHOME = '/home/jhover/'
+    NCHOME = '/home/jhover/git/certify/misc/ssca/intermediate/'
     HOST = 'cloudy.rhic.bnl.gov'    
-    CERT = "%s/etc/%s/hostcert.pem" % (NCHOME, HOST)
-    KEY = "%s/etc/%s/hostkey.pem" % (NCHOME, HOST)
-    CHAIN = "%s/etc/%s/cacert.pem" % (NCHOME, HOST)
+    CERT = "%s/certs/%s.cert.pem" % (NCHOME, HOST)
+    KEY = "%s/private/%s.keynopw.pem" % (NCHOME, HOST)
+    CHAIN = "%s/certs/ca-chain.cert.pem" % (NCHOME)
 
 
     print('cert is %s' % CERT)
