@@ -15,14 +15,33 @@ import logging
 # Rebuild for Fedora 24. 
 #
 #
-class InfoService(object):
+VERSION = '{ "WebService" : { "version" : "1.0",} }'
+
+class Root(object):
     @cherrypy.expose
     def index(self):
-        return "Hello World"
+        return VERSION
     
     @cherrypy.expose
     def generate(self, length=8):
         return ''.join(random.sample(string.hexdigits, int(length)))
+
+
+class WebService(object):
+    exposed = True
+
+    def GET(self):
+        return 'GET entry'    
+    
+    def POST(self, key, doc ):
+        return 'POST entry'  
+    
+    def PUT(self, key, doc ):
+        return 'PUT entry'
+
+    def DELETE(self, key):
+        return 'DELETE entry'
+
     
 if __name__ == '__main__':
     
@@ -32,15 +51,20 @@ if __name__ == '__main__':
     KEY = "%s/private/%s.keynopw.pem" % (NCHOME, HOST)
     CHAIN = "%s/certs/ca-chain.cert.pem" % (NCHOME)
 
-
-    print('cert is %s' % CERT)
-    print('key is %s' % KEY)
-    print('chain is %s' % CHAIN)    
-
+    log=logging.getLogger()
+    log.setLevel(logging.DEBUG)
+    logging.info('cert is %s' % CERT)
+    logging.info('key is %s' % KEY)
+    logging.info('chain is %s' % CHAIN)    
     
-    cherrypy.tree.mount(InfoService())
+    cherrypy.tree.mount(Root())
+    cherrypy.tree.mount(WebService(), '/webservice',
+        {'/':
+            {'request.dispatch' : cherrypy.dispatch.MethodDispatcher()}
+        }
+    )
+    
     cherrypy.server.unsubscribe()
-
     server1 = cherrypy._cpserver.Server()
     server1.socket_port=20334
     server1._socket_host='0.0.0.0'
@@ -51,18 +75,10 @@ if __name__ == '__main__':
     server1.ssl_private_key = KEY
     server1.ssl_certificate_chain = CHAIN
     server1.subscribe()
-
     server2 = cherrypy._cpserver.Server()
     server2.socket_port=20333
     server2._socket_host="0.0.0.0"
     server2.thread_pool=30
     server2.subscribe()
-
     cherrypy.engine.start()
     cherrypy.engine.block()   
-    
-    
-    
-    
-    
-    #cherrypy.quickstart(InfoService())
