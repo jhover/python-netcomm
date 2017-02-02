@@ -43,7 +43,8 @@ for tu in TESTURLS:
         print('Connection failure. %s' % ce)
     
     
-tu = '%s' % APITEST    
+tu = '%s' % APITEST
+print ("Testing URL: %s" % tu)    
 r = requests.put(tu, verify=CHAIN, params={'key' : TESTKEY, 'doc' : TESTDOC})
 print(r.text)
 print(r.status_code)
